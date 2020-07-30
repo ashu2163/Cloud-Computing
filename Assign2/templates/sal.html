@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+
+{% block app_content %}
+
+<div>
+    <h2>Get recent data based on locname:</h2>
+    <form action="/locrecent" method="post">
+        Enter location name:
+        <input type="text" name="loc">
+        <button type='submit' name='submit' >Search</button>
+    </form>
+</div>
+
+{% if col %}
+<table class="table">
+    <tr>
+    <td>longitude
+    </td>
+    <td>latitude
+    </td>
+     <td>mag
+     </td>
+    <td>time
+    </td>
+    <td>place
+    </td>
+</tr>
+
+{% for a in col %}
+<tr>
+    <td>{{  a[0] }}
+    </td>
+    <td> {{  a[1] }}
+    </td>
+    <td> {{  a[2] }}
+    </td>
+    <td> {{  a[3] }}
+    </td>
+    <td> {{ loc }}</td>
+</tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

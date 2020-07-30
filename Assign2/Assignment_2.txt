@@ -1,0 +1,72 @@
+
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+@app.route('/large', methods=['GET', 'POST'])
+def large():
+    radius = request.form['radius']
+    lat = request.form['latitude']
+    long1 = request.form['longitude']
+    north = float(lat) + float(radius) / 111
+    south = float(lat) - float(radius) / 111
+    east = float(long1) + float(radius) / 111
+    west = float(long1) - float(radius) / 111
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "SELECT latitude, longitude, mag FROM quakes1 where latitude >= \'" + str(south) + "\' AND latitude <= \'" + str(north) + "\' AND longitude >= \'" + str(west) + "\'AND longitude <= \'" + str(east) + "\' order by mag desc limit 1"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    cursor.close()
+    return render_template('largest.html', col=col)
+
+
+@app.route('/magnitude', methods=['GET', 'POST'])
+def magnitude():
+    start = request.form['start']
+    end = request.form['end']
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "SELECT mag, time from quakes1 where mag >= \'" + str(start) + "\' AND mag <= \'" + str(end) + "\'"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    row = []
+    count = 0
+    startdate = datetime.strptime('2020-06-10', '%Y-%m-%d')
+    for c in col:
+        timex = c[1].split("T")[0]
+        print(st)
+        if (datetime.strptime(timex, '%Y-%m-%d') > startdate):
+            count += 1
+            row.append(c)
+            print(end)
+    cursor.close()
+    return render_template('quakes.html', col=row, count = count)
+
+
+@app.route('/range', methods=['GET', 'POST'])
+def range():
+    radius = request.form['radius']
+    lat = request.form['latitude']
+    long1 = request.form['longitude']
+    north = float(lat) + float(radius) / 111
+    south = float(lat) - float(radius) / 111
+    east = float(long1) + float(radius) / 111
+    west = float(long1) - float(radius) / 111
+    
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "SELECT latitude, longitude, mag FROM quakes1 where latitude >= \'" + str(south) + "\' AND latitude <= \'" + str(north) + "\' AND longitude >= \'" + str(west) + "\'AND longitude <= \'" + str(east) + "\'"
+    query1 = "SELECT COUNT(latitude) FROM quakes1 where latitude >= \'" + str(south) + "\' AND latitude <= \'" + str(north) + "\' AND longitude >= \'" + str(west) + "\'AND longitude <= \'" + str(east) + "\'"
+    cursor.execute(query1)
+    out = cursor.fetchall()
+    cursor.execute(query)
+    out1 = cursor.fetchall()
+
+    return render_template('range.html', out=out, out1=out1)
+
+
+port = int(os.getenv('PORT', '3000'))
+app.run(host='0.0.0.0', port=port,debug=True)

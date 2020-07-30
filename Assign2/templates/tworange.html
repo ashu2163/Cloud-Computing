@@ -1,0 +1,74 @@
+{% extends "index.html" %}
+
+{% block app_content %}
+
+<div>
+    <form action="/tworange" method="post">
+        <h3>
+            count of earthquakes within specified range for 2 locations
+        </h3>
+        Enter Latitude of first location:
+        <input type="text" name="latitude1">
+        Enter Longitude of first location:
+        <input type="text" name="longitude1">
+        <br>
+        Enter Latitude of second location:
+        <input type="text" name="latitude2">
+        Enter Longitude of second location:
+        <input type="text" name="longitude2">
+        <!-- Enter the range of the radius:
+        <input type="number" name="radius"> -->
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+</div>
+
+
+</div>
+{% if out %}
+<table class="table">
+    <tr>
+    <td>ID
+    </td>
+    <td>Latitude
+    </td>
+    <td>
+
+    </td>
+    <td>longitude
+    </td>
+     <td>
+        time
+     </td>
+    <td>place
+    </td>
+</tr>
+
+{% for o in out %}
+
+<tr>
+    <td>{{  o[0] }}
+    </td>
+    <td>
+
+    </td>
+    <td> {{  o[1] }}
+    </td>
+    <td>
+
+    </td>
+    <td> {{  o[2] }}
+    </td>
+     <td> {{  o[3] }}
+    </td>
+    <td> {{  o[4] }}
+    </td>
+</tr>
+
+
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+
+{% if col %}
+<div>
+    count = {{ count }}
+</div>
+<table class="table">
+    <tr>
+    <td>magnitude
+    </td>
+    <td>
+
+    </td>
+    <td>date
+    </td>
+     <td>
+
+     </td>
+
+</tr>
+
+{% for o in col %}
+
+<tr>
+    <td>{{  o[0] }}
+    </td>
+    <td>
+
+    </td>
+    <td> {{  o[1] }}
+    </td>
+    <td>
+
+    </td>
+</tr>
+
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

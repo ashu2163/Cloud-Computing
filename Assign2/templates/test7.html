@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+{% for e in entry %}
+<br>
+Picture: <img src="../static/{{ e[0] }}"  alt="picture not found">
+<br>
+Caption : {{   e[1]  }}
+<br><br>
+{% endfor %}
+{% endblock %}
