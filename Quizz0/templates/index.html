@@ -1,0 +1,122 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+<html>
+<body>
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="static/style.css">
+{% endblock %}
+
+{#{% block title %}
+  {% if title %}{{ title }} - {{ appname }}{% else %}{{ appname }}{% endif %}
+{% endblock %}#}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+                <a class="navbar-brand" href="{{ url_for('Question6') }}">Question 6</a>
+                <a class="navbar-brand" href="{{ url_for('Question7') }}">Question 7</a>
+                <a class="navbar-brand" href="{{ url_for('Question8') }}">Question 8</a>
+            </div>
+        </div>
+    </nav>
+
+{% endblock %}
+
+
+
+
+{% block content %}
+    <div id="title_bar" class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h2 id="student_id">1001709115</h2>
+          <h2 id="student_name">Mehta, Ashutosh</h2>
+          <img src='../static/v.jpg' />
+          <h2 id="counter"></h2>
+      </div>
+    </div>
+
+    <!-- <script> -->
+              <!-- // var i = 0;
+              // console.log("---------------------------------------hello-------------------------");
+              // const interval = setInterval(getSeconds, 1000);
+              // function getSeconds() {
+              //     document.getElementById("counter").textContent = "count : " + i;
+              //     i++;
+
+              // }
+              // function resetCount() {
+              //   i = 0;
+              //   } -->
+          <!-- </script> -->
+
+
+    <div>
+      <form action="/demo" method="post">
+        <input  type="text" name="n1">       
+        <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+      </form>
+    </div>
+    <div>
+      {% if name %}
+      {{name}}
+      {% endif %}
+    </div>
+    <!-- <div>
+      <form action="/select" method="post">
+        <input  type="number" name="num1" >       
+        <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+      </form>
+    </div>
+    
+    {% if col %}
+    <table class='table'>
+      {% for c in col %}
+        <tr>
+          <td>{{ c[0] }}</td>
+          <td>{{ c[1] }}</td>  
+        </tr>
+      {% endfor %}
+    </table>
+    {% endif %} -->
+    
+
+    
+    <div>
+      <form action="/delete" method="post">
+        Select name whose entry you want to delete:
+        
+        <select name="name1">
+          {% for e in names %}
+          <option >{{ e[0] }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+      </form>
+    </div>
+    
+    <div> 
+      <form action="/getpic" method="post">
+        Enter Pic-name:
+        <input type="text" placeholder='xyz.jpg' name="picname">
+        <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+      </form>
+    </div>
+    {% if entry %}
+    {% for e in entry %}
+  <br>  
+  Name : {{  name }}
+  <br>
+  Picture: <img src="../static/{{ e[0] }}"  alt="no picture available">
+<br>
+
+{% endfor %}
+{% else %}
+no picture available
+{% endif %}
+
+{% endblock %}
+</body>
+</html>
