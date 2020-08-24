@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+
+{% block app_content %}
+
+{% if col %}
+
+<table class="table">
+    <tr>
+        <td>Time
+        </td>
+        <td>ID
+        </td>
+        <td> Depth
+        </td>
+         <td>Magnitude
+         </td>
+        <td>Nst
+        </td>
+        <td>Error
+        </td>
+        <td>Latitude
+        </td>
+        <td>Logitude
+        </td>
+        <td>Place
+        </td>
+    </tr>
+
+    {% for a in col %}
+<tr>
+    <td>{{  a[0] }}
+    </td>
+    
+    <td> {{  a[1] }}
+    </td>
+    <td> {{  a[2] }}
+    </td>
+     <td> {{  a[3] }}
+    </td>
+    <td> {{  a[4] }}
+    </td>
+    <td>
+        {{ a[5] }}
+    </td>
+    <td>
+        {{ a[7] }}
+    </td>
+    <td>
+        {{ a[8] }}
+    </td>
+    <td>
+        {{ a[9] }}
+    </td>
+</tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+<div>
+    <form action="/selectv" method="post">
+        <h3>
+            Quakes based on id:
+        </h3>
+        Enter id:
+        <input type="text" name="id" >
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+</div>
+{% endblock %}
+

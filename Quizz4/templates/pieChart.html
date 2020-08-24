@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+<div id="pie_div1" ></div>
+
+<form action="/pieChart" method="POST">
+    <h3>Pie chart</h3>
+  Enter Elev1:
+  <input type="number" name="elev1">
+  Enter Elev2:
+  <input type="number" name="elev2">
+  Enter Div:
+  <input type="number" name="div1">
+  <button type="submit" name="submit">Find</button>
+</form>
+
+{% if col1 %}
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+    var data = google.visualization.arrayToDataTable({{col1 | safe }} );
+    var options = {
+        //title: 'Motivation and Energy Level Throughout the Day',
+        chartArea: {width: '200%',height:'200%'},
+        annotations: {
+          alwaysOutside: true,
+          textStyle: {
+            fontSize: 14,
+            color: '#000',
+            auraColor: 'none'
+          }
+        },
+        hAxis: {
+        },
+        vAxis: {
+        }
+      };
+      var chart2 = new google.visualization.PieChart(document.getElementById('pie_div1'));
+      chart2.draw(data,options);
+    }
+</script>
+{% endif %}
+{% endblock %}

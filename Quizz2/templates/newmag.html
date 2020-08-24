@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+{% block app_content %}
+
+<div>
+    <h2>Data between provided magnitude based on division:</h2>
+    <form action="/magnituderange1" method="post">
+        Enter min mag:
+        <input type="text" name="mag1" placeholder="5">
+        Enter max mag:
+        <input type="text" name="mag2" placeholder="6">
+        Enter div:
+        <input type="text" name="div1" placeholder="3"> 
+        <button type="submit" name="submit">Find</button>
+        <br>
+    </form>
+<div>
+
+
+</div>
+{% if col %}
+{% for o in col %}
+<h2>Magnitude between {{ o[0][4] }} and {{o[0][4] + div }} </h2>
+<table class="table">
+    <tr>
+    <td>ID
+    </td>
+    <td>place
+    </td>
+    <td> Latitude
+    </td>
+     <td>longitude
+
+     </td>
+    <td>mag
+    </td>
+</tr>
+
+
+    
+    {% for a in o %}
+<tr>
+    <td>{{  a[0] }}
+    </td>
+    
+    <td> {{  a[1] }}
+    </td>
+    <td> {{  a[2] }}
+    </td>
+     <td> {{  a[3] }}
+    </td>
+    <td> {{  a[4] }}
+    </td>
+</tr>
+    {% endfor %}
+</table>
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

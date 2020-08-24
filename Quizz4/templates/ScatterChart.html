@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+<div id="sc_div" ></div>
+
+<form action="/scatterChart" method="POST">
+    <h3>Scatter chart</h3>
+  Enter Volcano Number 1:
+  <input type="number" name="vn1">
+  Enter Volcano Number 2:
+  <input type="number" name="vn2">
+  <button type="submit" name="submit">Find</button>
+</form>
+
+{% if col1 %}
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+    var data = google.visualization.arrayToDataTable({{col1 | safe }} );
+    //   var options = {
+    //     title: 'Population of Largest U.S. Cities',
+    //     chartArea: {width: '50%',height:'1000%'},
+    //     isStacked: true,
+
+    //     vAxis: { gridlines: { count: 4 } },
+    //     bars: 'vertical'
+    //   };
+    var options = {
+        //title: 'Motivation and Energy Level Throughout the Day',
+        annotations: {
+          alwaysOutside: true,
+          textStyle: {
+            fontSize: 14,
+            color: '#000',
+            auraColor: 'none'
+          }
+        },
+        hAxis: {
+          //title: 'Time of Day',
+          //format: 'h:mm a',
+        //   viewWindow: {
+        //     min: [7, 30, 0],
+        //     max: [17, 30, 0]
+        //   }
+        },
+        vAxis: {
+          //title: 'Rating (scale of 1-10)'
+        }
+      };
+      var chart2 = new google.visualization.ScatterChart(document.getElementById('sc_div'));
+      chart2.draw(data,options);
+    }
+</script>
+{% endif %}
+{% endblock %}

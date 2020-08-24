@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('Question9') }}">Question 9</a>
+            </div>
+        </div>
+    </nav>
+
+{% endblock %}
+
+
+{% block app_content %}
+
+{% if entry %}
+Thanks for submitting your name {{ entry }}!
+{% endif %}
+
+
+
+
+<!-- <div>
+    <form action="/range" method="post">
+        <h3>
+            Quakes occured in a specified range of a area
+        </h3>
+        Enter Range(in kms):
+        <input type="text" name="radius" >
+        Enter Latitude:
+        <input type="text" name="latitude">
+        Enter Longitude:
+        <input type="text" name="longitude">
+        Enter the range of the radius:
+        <input type="number" name="radius">
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+</div>
+<div>
+    <form action="/daterange" method="post">
+        <h3>
+            Quakes occured in between dates
+        </h3>
+        Enter Start date for range:
+        <input type="date" min="2020-05-15" max="2020-06-14" name="mindate">
+        Enter end date for range:
+        <input type="date" min="2020-05-15" max="2020-06-14" name="maxdate">
+        <button type="submit" name="submit">submit</button>
+        <br>
+        <br>
+    </form>
+</div>
+<div>
+    <form action="/magni" method="post">
+        <h3>
+            Quakes in between richter scale
+        </h3>
+        Enter ricter scale starting:
+        <input type="text" name="start">
+        Enter ricter scale ending:
+        <input type="text" name="end">
+        <button type="submit" name="submit">output</button>
+        <br>
+        <br>
+    </form>
+</div>
+<div>
+    <form action="/largedallas" method="post">
+        <h3>
+            largest quake in the range of the location given
+        </h3>
+        Enter Latitude:
+        <input type="text" name="latitude">
+        Enter Longitude:
+        <input type="text" name="longitude">
+        <br>
+        Enter the range of the radius:
+        <input type="number" name="radius">
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+</div> -->
+{% endblock %}

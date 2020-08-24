@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block app_content %}
+
+<div>
+    <form action="/latlon" method="post">
+        <h3>
+        count of earthquakes within specified range for 2 locations
+        </h3>
+        Enter Latitude of first location:
+        <input type="text" name="latitude1">
+        Enter Longitude of first location:
+        <input type="text" name="longitude1">
+        <br>
+        Enter Latitude of second location:
+        <input type="text" name="latitude2">
+        Enter Longitude of second location:
+        <input type="text" name="longitude2">
+        Enter how many largest values you want:
+        <input type="number" name="n">
+        <!-- Enter the range of the radius:
+        <input type="number" name="radius"> -->
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+
+</div>
+{% endblock %}

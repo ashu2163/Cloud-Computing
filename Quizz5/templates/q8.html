@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+<div id="sc_div" ></div>
+
+<form action="/findbigram" method="POST">
+    <h3>Word</h3>
+  Enter Word1:
+  <input type="text" name="w1">
+  Enter Word2:
+  <input type="text" name="w2">
+  <button type="submit" name="submit">Find</button>
+</form>
+
+<br>
+{% if ans %}
+<b>From l.txt: </b> {{ ans }} : {{ a }}
+{% endif %}
+<br>
+<br>
+{% if ans1 %}
+<b>From h.txt: </b>{{ ans1 }}: {{ b }}
+{% endif %}
+
+{% endblock %}

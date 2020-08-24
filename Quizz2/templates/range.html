@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div>
+    <form action="/range" method="post">
+        <h3>
+            Quakes occured in a specified range of a area
+        </h3>
+        Enter Range(in kms):
+        <input type="text" name="radius" >
+        Enter Latitude:
+        <input type="text" name="latitude">
+        Enter Longitude:
+        <input type="text" name="longitude">
+        <button type="submit" name="submit">Find</button>
+        <br>
+        <br>
+    </form>
+</div>
+
+
+{% if out1 %}
+
+<table class="table">
+    <tr>
+    <td>Latitude
+    </td>
+    <td>
+
+    </td>
+    <td>longitude
+    </td>
+     <td>
+
+     </td>
+    <td>magnitude
+    </td>
+</tr>
+
+{% for o in out1 %}
+
+<tr>
+    <td>{{  o[0] }}
+    </td>
+    <td>
+
+    </td>
+    <td> {{  o[1] }}
+    </td>
+    <td>
+
+    </td>
+    <td> {{  o[2] }}
+    </td>
+</tr>
+
+
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

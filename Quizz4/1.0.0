@@ -1,0 +1,6 @@
+Requirement already satisfied: Flask in c:\program files\python37\lib\site-packages (1.1.2)
+Requirement already satisfied: click>=5.1 in c:\program files\python37\lib\site-packages (from Flask) (7.1.2)
+Requirement already satisfied: Werkzeug>=0.15 in c:\program files\python37\lib\site-packages (from Flask) (0.16.1)
+Requirement already satisfied: Jinja2>=2.10.1 in c:\program files\python37\lib\site-packages (from Flask) (2.11.2)
+Requirement already satisfied: itsdangerous>=0.24 in c:\program files\python37\lib\site-packages (from Flask) (1.1.0)
+Requirement already satisfied: MarkupSafe>=0.23 in c:\program files\python37\lib\site-packages (from Jinja2>=2.10.1->Flask) (1.1.1)

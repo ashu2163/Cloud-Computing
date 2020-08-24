@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+    <div id="title_bar" class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h2 id="student_id">1001709115</h2>
+          <h2 id="student_name">Mehta, Ashutosh</h2>
+          <img src='../static/knuth.jpg' width="200px" height="200px" />
+          <h2 id="counter"></h2>
+      </div>
+    </div>
+    
+    <div>
+        <h3> Update Functionality </h3>
+        <form action="/updateDescription" method="post">
+          Enter Name:<input  type="text" name="name" >
+          Enter Description: <input type="text" name="desname"  placeholder='Enter new description'>       
+          <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+        </form>
+      </div>
+      
+  
+      {% if col %}
+      <table class='table'>
+        {% for c in col %}
+          <tr>
+            <td>{{ c[0] }}</td>
+            <td><img src="../static/{{ c[1] }}" alt="Image added but not found " width="200px" height="200px"/></td>    
+            <td>{{ c[2] }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+{% endblock %}  

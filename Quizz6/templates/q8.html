@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+
+<form action="/scatterChart" method="POST">
+  Enter Volcano Number 1:
+  <input type="number" name="vn1">
+  Enter Volcano Number 2:
+  <input type="number" name="vn2">
+  <button type="submit" name="submit">Find</button>
+</form>
+
+{% if col1 %}
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+import os
+import random
+import redis
+from dbConnection import dbConnect 
+from time import time, process_time
+
+
+r = redis.StrictRedis(host='newapp1.redis.cache.windows.net', port=6380, db=0, password='U0Uh+fEtxuRma2n8BzDarKXqckC3N3KaSLkLKNhtY34=', ssl=True)
+
+# EB looks for an 'application' callable by default.
+app = Flask(__name__)
+
+bootstrap = Bootstrap(app)
+
+
+@app.route('/',methods=['GET','POST'])
+def index(): 
+    return render_template('index.html')
+
+@app.route("/nstrange", methods=['POST', 'GET'])
+def nstrange():
+    nst1 = int(request.form['nst1'])
+    nst2 = int(request.form['nst2'])
+    cursor = dbConnect.cursor()
+    #magVal = random.randint(1, 6)
+    s=time()
+    query = query = "SELECT q.id,l.latitude, l.longitude, l.place, q.mag, q.nst FROM q, l where q.id=l.id and q.nst  >= \'" + str(nst1) + "\' AND q.nst <= \'" + str(nst2) + "\'"
+    cursor.execute(query)
+    row2 = cursor.fetchall()
+    e = time()-s
+    #Time = e - s
+    #print(Time)
+    return render_template('q1.html', time=e, row2=row2)
+
+@app.route('/Question1')
+def Question6():
+    return render_template('q1.html')

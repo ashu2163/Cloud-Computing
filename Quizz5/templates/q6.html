@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+<div id="pie_div1" ></div>
+
+<form action="/maxfreq" method="POST">
+    <h3>Max Freq</h3>
+  Enter freq:
+  <input type="number" name="n">
+  <button type="submit" name="submit">Find</button>
+</form>
+
+{% if d %}
+{{ d }}
+{% endif %}
+<br>
+
+{% if d1 %}
+{{ d1 }}
+{% endif %}
+{% endblock %}

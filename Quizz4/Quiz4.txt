@@ -1,0 +1,208 @@
+
+Name: Mehta, Ashutosh 
+Last 4 digits ID: 9115
+
+CSE 6331, Cloud Computing					
+
+Quiz Q4, 3.30, Summer 2020   (c) DL, UTA, 2020
+
+
+  C&P means cut and paste only those relevant lines from your program(s) into this quiz.
+
+ 1.  I understand that I am on my honor during this quiz, I will not collaborate, use 
+     non-allowed sources, and I will not discuss or share this quiz with anyone for the next 
+     12 hours.
+     You MAY: use Google to search, use previous source code, 
+     YOU MAY NOT use:
+     Email, Facebook, Hangouts, IM, chats, Skype or ANY other human connection.
+
+     ANY VIOLATIONS to scholastic honesty, which include working with others during this quiz, communicating with others during
+     this quiz, giving anyone or recieving from anyone any information during this quiz or for the next 6 hours after completion
+     of this quiz is a honors violation and will result in a -100 points being assessed for this quiz and being reported. 
+
+     This is a timed test. Late tests will have points deducted for being late.
+     Very late tests will not be graded.
+
+     When you are complete, with any part, please send the link, raise your hand, so we may visually inspect that part.
+
+     The second part of the test, you should electronically submit, you will need to copy and paste 
+     only those lines of code to implement that part of the test, usually a few (two to eight) lines of code. 
+     Place it immediately after the question.
+
+     Submit this Quiz (renamed) with code cut and pasted, ONLY text. DO NOT submit zips, binaries, libraries,
+     or anything other than text.
+
+     When any parts(questions) are complete complete, submit this test, you may make multiple submissions.
+
+     If you have computer, or other, problems, please raise your hand immediately.
+
+     If you understand and agree, please initial here:
+     _____AM________
+
+ 2. Get files from this same folder.
+   
+ 3. Name your program/submission with your name and last digits of your ID.
+
+ 4a. Using the cloud services provider, all functionality possible should be implemented on that provider.
+     (Of course, displaying web pages through a browser and the user interface is "local")
+
+ 4b. Upload all data files (*csv, not this quiz) to cloud service. 
+  
+Show and submit code, when each part is complete, raise your hand and then show us:
+
+ To recieve credit you MUST show (demo) AND submit the code (text only) on Canvas.
+
+  5. Show a web page and interface (which resides on the cloud provider) with your name,
+     and below that, Student ID at the top of every web page dispayed 
+     (for this quiz). 
+     Please use a large font.
+    
+     The cloud service providers are IBM Cloud (BlueMix), Microsoft Azure, Amazon AWS. You may use any you wish.
+
+    Import the datasets into a Relational Data Base (SQL), if you have already done this, (briefly) explain/describe
+    how you did this. Please note that for some parts of the following you will need to create indexes (keys)
+    appropriately.
+
+  6. Please show a page, followed by a vertical bar chart on that page, where the user, through a web form, 
+     will give a country name (column C), then you will display a bar chart with labels (volcano name) 
+     on the top of each bar for each volcano in that country.
+
+@application.route('/barChart', methods=['GET', 'POST'])
+def barChart1():
+    country = request.form['country']
+    col1 = [['Country','Volcano',{'role':'style'}]]
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "select VolcanoName,Elev from volcano where Country = '" + str(country) +"'"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    t_c = len(col)
+    i=0
+    while(i<t_c):
+        random_number = random.randint(0,16777215)
+        h_n = str(hex(random_number))
+        h_n ='#'+ h_n[2:]
+        col1.append([ col[i][0], col[i][1], h_n ])
+        i=i+1
+    cursor.close()
+    return render_template('barChart.html', col1=col1)
+@application.route('/Question6')
+def Question6():
+    return render_template('barChart.html')
+
+
+
+
+  7. Allow a user, through a web form, to give an elevation range and a number of slices N,
+     and in a pie chart show the total number of volcanos for each of N pie slices (there should be N pie slices)
+     evenly divided into groups of elevations. (For example from 1000 to 5000, and a number of slices N = 4
+     show 4 slices, the first for elevation 1000 to 2000 has 99 volcanos out of the 191 total in that range, 
+     more than half.)
+     The pie chart should occupy 70 to 85% of the screen, each slice with labels inside the slice, 
+     each in a different color.
+
+@application.route('/pieChart', methods=['GET', 'POST'])
+def PieChart():
+    fromElev = int(request.form['elev1'])
+    toElev = int(request.form['elev2'])
+    division = int(request.form['div1'])
+    t_c = 0
+    col1 = [['Elev','No Of Country',{'role':'style'}]]
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    d = (float(toElev) - float(fromElev)) / float(division)
+    division = int(division)
+    fromElev = float(fromElev)
+    while int(division) > 0:
+        query = "select * from volcano where Elev >= " + str(fromElev) + " and Elev < " + str(float(fromElev) + float(d)) + ""
+        cursor.execute(query)
+        col = cursor.fetchall()
+        magR = str(fromElev) + " to " + str(float(fromElev) + float(d))
+        t_c = len(col)
+        random_number = random.randint(0,16777215)
+        h_n = str(hex(random_number))
+        h_n ='#'+ h_n[2:]
+        col1.append([ magR, t_c, h_n ])
+        division -= 1
+        fromElev += d
+
+    cursor.close()
+
+    return render_template('pieChart.html', col1=col1)
+
+@application.route('/Question7')
+def Question7():
+    return render_template('pieChart.html')
+
+
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+    var data = google.visualization.arrayToDataTable({{col1 | safe }} );
+    var options = {
+        //title: 'Motivation and Energy Level Throughout the Day',
+        chartArea: {width: '200%',height:'200%'},
+        annotations: {
+          alwaysOutside: true,
+          textStyle: {
+            fontSize: 14,
+            color: '#000',
+            auraColor: 'none'
+          }
+        },
+        hAxis: {
+        },
+        vAxis: {
+        }
+      };
+      var chart2 = new google.visualization.PieChart(document.getElementById('pie_div1'));
+      chart2.draw(data,options);
+    }
+</script>
+
+
+  8. Allow a user, through a web form, to give a volcano number range (for example 40000 to 41000),
+     and show a point chart (scatter diagram) where the X axis is the volcano number and the Y axis 
+     is the elevation.
+     (Please note that a few of the volcanos are under water or ground, so the elevation may be negative.) 
+     Please scale so that it fits on the screen, occupying between 70 to 80% of the screen width.
+     Please label both axis.
+
+@application.route('/scatterChart', methods=['GET', 'POST'])
+def ScatterChart():
+    fromNum1 = int(request.form['vn1'])
+    toNum2 = int(request.form['vn2'])
+    t_c = 0
+    col1 = [['Volcano range','Elevation',{'role':'style'}]]
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    
+    query = "select Number,Elev from volcano where Number >= '" + str(fromNum1) + "' and Number < '" + str(float(toNum2)) + "'"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    t_c=len(col)
+    i=0
+    while(i<t_c):
+        #magR = str(fromNum1) + " to " + str(float(toNum2))
+        random_number = random.randint(0,16777215)
+        h_n = str(hex(random_number))
+        h_n ='#'+ h_n[2:]
+        col1.append([ col[i][0] , col[i][1], h_n ])
+        i=i+1
+
+    cursor.close()
+    return render_template('ScatterChart.html', col1=col1)
+@application.route('/Question8')
+def Question8():
+    return render_template('ScatterChart.html')
+
+
+
+ 9. Show us, in a link, the application running and we will try it out. Only for parts 6, 7, 8
+
+ 10. When complete, return (send) this quiz
+     If you finish early, send this immediately, otherwise send between
+     the end of class and no more than 1 minute after that.
+

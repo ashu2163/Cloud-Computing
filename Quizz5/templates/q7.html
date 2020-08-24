@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% block app_content %}
+
+<div id="sc_div" ></div>
+
+<form action="/removeWord" method="POST">
+  <h3>Max Freq</h3>
+Enter freq:
+<input type="number" name="n">
+<button type="submit" name="submit">Find</button>
+</form>
+
+{% if c1 %}
+Count of removed words from l.txt: {{ c1 }}
+{% endif %}
+<br>
+<br>
+{% if c2 %}
+Count of removed words from h.txt: {{ c2 }}
+{% endif %}
+<br>
+<br>
+{% if r1 %}
+<b>Text of l.txt:</b> {{ r1 }}
+{% endif %}
+<br>
+<br>
+{% if r2 %}
+<b>Text of h.txt: </b>{{ r2 }}
+{% endif %}
+<br>
+{% if d %}
+{{ d }}
+{% endif %}
+<br>
+{% if d2 %}
+{{ d2 }}
+{% endif %}
+
+{% endblock %}

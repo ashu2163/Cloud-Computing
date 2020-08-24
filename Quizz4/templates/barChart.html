@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% block app_content %}
+    <div id="chart_div" class="results"></div>
+    <div id="chart_div1" ></div>
+    <div id="pie_div1" ></div>
+    <div id="scatter_div1" ></div> 
+
+    <form action="/barChart" method="POST">
+      <h3>Bar chart</h3>
+    Enter Country:
+    <input type="text" name="country">
+    <button type="submit" name="submit">Find</button>
+</form>
+
+{% if col1 %}
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+    var data = google.visualization.arrayToDataTable({{col1 | safe }} );
+    var options = {
+        //title: 'Motivation and Energy Level Throughout the Day',
+        displayAnnotations: true,
+        chartArea: {width: '200%',height:'90%'},
+        annotations: {
+          alwaysOutside: true,
+          textStyle: {
+            fontSize: 14,
+            color: '#000',
+            auraColor: 'none'
+          }
+        },
+        hAxis: {
+          title: 'Volcono Name',
+          //format: 'h:mm a',
+        //   viewWindow: {
+        //     min: [7, 30, 0],
+        //     max: [17, 30, 0]
+        //   }
+        },
+        vAxis: {
+          title: 'Elevation'
+        }
+      };
+      //var chart1 = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
+      //var chart2 = new google.visualization.PieChart(document.getElementById('pie_div1'));
+      //var chart3 = new google.visualization.ScatterChart(document.getElementById('scatter_div1'));
+      chart.draw(data, options);
+      // chart.draw(data,options);
+      // chart2.draw(data,options);
+      // chart3.draw(data,options);
+    }
+</script>
+{% endif %}
+{% endblock %}

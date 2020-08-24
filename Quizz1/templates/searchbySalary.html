@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+    <div id="title_bar" class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h2 id="student_id">1001709115</h2>
+          <h2 id="student_name">Mehta, Ashutosh</h2>
+          <img src='../static/knuth.jpg' width="200px" height="200px" />
+          <h2 id="counter"></h2>
+      </div>
+    </div>
+    <div>
+        <h3>Search By Salary</h3> 
+        <form action="/searchbyName" method="post">
+           Enter Salary below which you want to get entries:  
+          <input  type="number" name="num1" >       
+          <button type="submit" class="btn btn-default" name="Submit">Submit</button>
+        </form>
+      </div>
+      
+      {% if col %}
+      <table class='table'>
+        {% for c in col %}
+          <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td> 
+            <td><img src='../static/{{ c[2] }}' alt=' No Picture Available' width="200px" height="200px"></td> 
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+
+{% endblock%}

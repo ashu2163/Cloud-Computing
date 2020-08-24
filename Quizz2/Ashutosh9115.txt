@@ -1,0 +1,205 @@
+
+Name: Ashutosh Mehta
+Last 4 digits ID: 9115
+
+CSE 6331, Cloud Computing					
+
+Quiz Q2, 3.30, Summer 2020   (c) DL, UTA, 2020
+
+
+  C&P means cut and paste only those relevant lines from your program(s) into this quiz.
+
+ 1.  I understand that I am on my honor during this quiz, I will not collaborate, use 
+     non-allowed sources, and I will not discuss or share this quiz with anyone for the next 
+     12 hours.
+     You MAY: use Google to search, use previous source code, 
+     YOU MAY NOT use:
+     Email, Facebook, Hangouts, IM, chats, Skype or ANY other human connection.
+
+     ANY VIOLATIONS to scholastic honesty, which include working with others during this quiz, communicating with others during
+     this quiz, giving anyone or recieving from anyone any information during this quiz or for the next 6 hours after completion
+     of this quiz is a honors violation and will result in a -100 points being assessed for this quiz and being reported. 
+
+     This is a timed test. Late tests will have points deducted for being late.
+     Very late tests will not be graded.
+
+     When you are complete, with any part, please send the link, raise your hand, so we may visually inspect that part.
+
+     The second part of the test, you should electronically submit, you will need to copy and paste 
+     only those lines of code to implement that part of the test, usually a few (two to eight) lines of code. 
+     Place it immediately after the question.
+
+     Submit this Quiz (renamed) with code cut and pasted, ONLY text. DO NOT submit zips, binaries, libraries,
+     or anything other than text.
+
+     When any parts(questions) are complete complete, submit this test, you may make multiple submissions.
+
+     If you have computer, or other, problems, please raise your hand immediately.
+
+     If you understand and agree, please initial here:
+     _________AM________
+
+ 2. Get files from this same folder.
+   
+ 3. Name your program/submission with your name and last digits of your ID.
+
+ 4a. Using the cloud services provider, all functionality possible should be implemented on that provider.
+     (Of course, displaying web pages through a browser and the user interface is "local")
+
+ 4b. Upload all data files (*jpg and *csv, not this quiz) to cloud service. 
+  
+Show and submit code, when each part is complete, raise your hand and then show us:
+
+ To recieve credit you MUST show (demo) AND submit the code (text only) on Canvas.
+
+  5. Show a web page and interface (which resides on the cloud provider) with your name,
+     and below that, Student ID at the top of every web page dispayed 
+     (for this quiz). 
+     Please use a large font.
+    
+     The cloud service provider is either IBM Cloud (BlueMix) or Microsoft Azure.
+
+     On that same page, allow a user to give an id value (such as "ak020921jc6m"), then please show 
+     the details of that quake (if it exists), location (lat, long, place name), mag, time, depth.
+     If there are any other quakes with the same mag (same mag plus or minus 0.1 mag), please list
+     those as well.
+
+    idd= request.form['id']
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "select * from q join l where l.id = \'" + str(idd) + "\' and q.id=l.id "
+    cursor.execute(query)
+    col = cursor.fetchall()
+    mag=col[0][3]
+    magfrom=mag-0.1
+    magto=mag+0.1
+    query1 = "select * from q join l where q.id=l.id and q.mag >= '"+ str(magfrom) +"' and q.mag <= '"+ str(magto) +"'"
+    cursor.execute(query1)
+    col1 = cursor.fetchall()
+    print(len(col1[0]))
+    col1.extend(col)
+    return render_template('selectv.html', col=col1)
+
+
+	
+
+  6. (Web page) Allow a user to give two location (pair) values (lat and long for two different locations) 
+     (those two locations create a boundary, a box) and a depth range (for example from 2 to 20),
+     then: display the 3 largest mag quakes within that (bounding) box, please display the id, location (as above),
+     the mag, and time.
+
+@app.route('/tworange', methods=['GET', 'POST'])
+def tworange():
+    lat = request.form['latitude1']
+    long0 = request.form['longitude1']
+    lat1 = request.form['latitude2']
+    long1 = request.form['longitude2']
+    fromdepth=request.form['fdepth']
+    todepth=request.form['tdepth']
+
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    if lat>lat1:
+        temp=lat1
+        lat1=lat
+        lat=temp
+    if long0 > long1:
+        temp=long1
+        long1=long0
+        long0=temp
+    query = "SELECT q.id,l.latitude, l.longitude, q.depth, l.place, q.time, q.mag FROM q join l where q.id=l.id and l.latitude  >= \'" + str(lat) + "\' AND l.latitude <= \'" + str(lat1) + "\' AND l.longitude >= \'" + str(long0) + "\'AND l.longitude <= \'" + str(long1) + "\' and q.depth >= '"+ str(fromdepth)+"' and q.depth <= '"+ str(todepth) +"' order by q.mag desc LIMIT 3 "
+    cursor.execute(query)
+    #connection.commit()
+    out = cursor.fetchall()
+    cursor.close()
+    return render_template('tworange.html', out=out)
+
+
+  7. (Web page), Allow a user to give a part of a location name (for example "Yellowstone" or "Alaska"), 
+     and a depth range (for example from 2 to 200), and a distance (for example 550 km), 
+     and show the largest magnitude quake (if one exists), within that distance.
+     Note, that there may be several locations in Alaska within that given depth range, 
+     so list the largest mag quake for each.
+     Please display the lat, long, mag, place, depth and date for each.
+    
+@app.route('/locrecent', methods=['GET', 'POST'])
+def locrecent():
+    loc = request.form['loc']
+    fromdepth=request.form['fdepth']
+    todepth=request.form['tdepth']
+    dist=request.form['dist']
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query = "SELECT longitude, latitude from l where place LIKE '%"+ str(loc) +"%'"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    north = float(col[0][1]) + float(dist) / 111
+    south = float(col[0][1]) - float(dist) / 111
+    east = float(col[0][0]) + float(dist) / 111
+    west = float(col[0][0]) - float(dist) / 111
+    query1 = "SELECT l.latitude, l.longitude, q.mag, l.place, q.depth, q.time FROM q join l where q.id=l.id and l.latitude >= \'" + str(south) + "\' AND l.latitude <= \'" + str(north) + "\' AND l.longitude >= \'" + str(west) + "\'AND l.longitude <= \'" + str(east) + "\' and q.depth >= '"+ str(fromdepth) +"' and q.depth <= '"+ str(todepth) +"' order by mag desc limit 1"
+    cursor.execute(query1)
+    col = cursor.fetchall()
+    cursor.close()
+    return render_template('sal.html', col=col)
+
+
+
+  8. (Similar to part 6, with some modification)
+     Allow a user to give two location (pair) values (lat and long for two different locations) 
+     (those two locations create a boundary, a box), and a value N, then: 
+     display the N largest mag quakes within that (bounding) box, (display lat, long, place, mag, time and id)
+     then allow a user to choose any of those quakes (displayed) and modify any of the values: 
+     lat, long, place, mag, time and id.
+
+@app.route('/latlon', methods=['GET', 'POST'])
+def latlon():
+    lat = request.form['latitude1']
+    long0 = request.form['longitude1']
+    lat1 = request.form['latitude2']
+    long1 = request.form['longitude2']
+    nlarge=request.form['n']
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    if lat>lat1:
+        temp=lat1
+        lat1=lat
+        lat=temp
+    if long0 > long1:
+        temp=long1
+        long1=long0
+        long0=temp
+    query = "SELECT q.id,l.latitude, l.longitude, q.depth, l.place, q.time, q.mag FROM q join l where q.id=l.id and l.latitude  >= \'" + str(lat) + "\' AND l.latitude <= \'" + str(lat1) + "\' AND l.longitude >= \'" + str(long0) + "\'AND l.longitude <= \'" + str(long1) + "\' order by q.mag desc LIMIT '"+ str(nlarge) +"'"
+    cursor.execute(query)
+    col = cursor.fetchall()
+    cursor.close()
+    return render_template('q8.html', col=col)
+
+@app.route('/q8a', methods=['GET', 'POST'])
+def q8a():
+    idd=request.form['id']
+    time=request.form['time']
+    lat=request.form['latitude']
+    lon=request.form['longitude']
+    place=request.form['place']
+    connection = sql.connect("quakes.db")
+    cursor = connection.cursor()
+    query="Update q set time= '"+ str(time) +"' where q.id= '"+ str(idd) +"'"
+    q1="Update l set latitude= '"+ str(lat) +"', longitude= '"+ str(lon) +"', place= '"+ str(place) +"'  where id= '"+ str(idd) +"'"
+    col=cursor.execute(query).rowcount
+    col1=cursor.execute(q1).rowcount
+    connection.commit()
+    cursor.close()
+    if col:
+        return render_template('q8a.html', col1=col)
+    else:
+        return render_template('q8a.html', entry="Entry not found..")
+
+
+
+  9. Show us, in a link, the application running and we will try it out. Only for parts 5, 6, 7, 8
+
+  10. When complete, return (send) this quiz
+      If you finish early, send this immediately, otherwise send between
+      the end of class and no more than 1 minute after that.
+
